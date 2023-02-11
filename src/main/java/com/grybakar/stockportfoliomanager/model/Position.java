@@ -45,4 +45,5 @@ public class Position {
   @ManyToOne(fetch = FetchType.LAZY)
   private Portfolio portfolio;
 
+
 }
