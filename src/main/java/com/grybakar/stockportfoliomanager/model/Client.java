@@ -34,9 +34,8 @@ public class Client {
 
   @OneToMany(
     mappedBy = "client",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true)
-  List<Portfolio> portfolios;
+    cascade = CascadeType.ALL)
+  List<Portfolio> portfolios = new ArrayList<>();
 
   public void addPortfolio(Portfolio portfolio) {
     portfolios.add(portfolio);
