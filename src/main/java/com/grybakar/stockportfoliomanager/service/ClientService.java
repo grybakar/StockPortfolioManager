@@ -37,7 +37,7 @@ public class ClientService {
 
   public ClientDTO saveClient(ClientDTO clientDTO) {
     log.info("Adding new Client: {}", clientDTO);
-    Client newClient = clientRepository.save(clientMapper.toEntity(clientDTO));
+    Client newClient = clientRepository.save(clientMapper.toClientEntity(clientDTO));
     return clientMapper.toClientDTO(newClient);
   }
 
@@ -53,7 +53,7 @@ public class ClientService {
 
     ClientDTO clientToUpdate = getClientById(id);
     update(requestDetails, clientToUpdate);
-    Client updatedClient = clientRepository.save(clientMapper.toEntity(clientToUpdate));
+    Client updatedClient = clientRepository.save(clientMapper.toClientEntity(clientToUpdate));
     log.info("Updated client info: {}", updatedClient);
     return clientMapper.toClientDTO(updatedClient);
   }

@@ -12,10 +12,8 @@ import org.mapstruct.factory.Mappers;
   unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ClientMapper {
 
-  ClientMapper MAPPER = Mappers.getMapper(ClientMapper.class);
-
   ClientDTO toClientDTO(Client client);
 
   @Mapping(target = "portfolios", ignore = true)
-  Client toEntity(ClientDTO clientDTO);
+  Client toClientEntity(ClientDTO clientDTO);
 }
