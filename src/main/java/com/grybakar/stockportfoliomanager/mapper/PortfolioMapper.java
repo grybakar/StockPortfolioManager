@@ -13,7 +13,6 @@ public interface PortfolioMapper {
 
   PortfolioDTO toPortfolioDTO(Portfolio portfolio);
 
-  @Mapping(target = "positions", ignore = true)
   @Mapping(target = "client", ignore = true)
   Portfolio toPortfolioEntity(PortfolioDTO portfolioDTO);
 

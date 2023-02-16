@@ -5,6 +5,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
@@ -31,18 +32,12 @@ public class Position {
 
   private String ticker;
 
-  private String companyName;
   private LocalDate purchaseDate;
   private Integer sharesOwned;
-  private Double currentPrice; // Market price of the stock
-  private Double marketValue; // shares * currentPrice;
-  private Double sharePrice; //  The original price you paid for each share, including any commissions or fees.
-  private Double shareCostBasis; // Price of one share paid at the time of purchase;
-  private Double totalCostBasis; // Total price  - shareCostBasis * shareOwned;
-  private Double gainLoss; // marketValue - totalCostBasis
   private Double gainLossPercentage;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "portfolio_id")
   private Portfolio portfolio;
 
 

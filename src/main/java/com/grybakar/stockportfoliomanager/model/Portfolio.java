@@ -9,8 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.Set;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
+@Builder
 @Table(name = "portfolio")
 public class Portfolio {
 
@@ -39,7 +41,7 @@ public class Portfolio {
     mappedBy = "portfolio",
     cascade = CascadeType.ALL,
     orphanRemoval = true)
-  private Set<Position> positions;
+  private List<Position> positions;
 
   public void addPosition(Position position) {
     positions.add(position);

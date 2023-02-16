@@ -1,7 +1,10 @@
 package com.grybakar.stockportfoliomanager.controller;
 
 import com.grybakar.stockportfoliomanager.dto.PortfolioDTO;
+import com.grybakar.stockportfoliomanager.dto.PositionDTO;
 import com.grybakar.stockportfoliomanager.service.PortfolioService;
+import com.grybakar.stockportfoliomanager.service.PositionService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PortfolioController {
 
   private final PortfolioService portfolioService;
+  private final PositionService positionService;
 
   @GetMapping
   public ResponseEntity<List<PortfolioDTO>> getAllPortfolios() {
@@ -26,17 +30,28 @@ public class PortfolioController {
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<PortfolioDTO> getClientById(@PathVariable(name = "id") Long id) {
+  public ResponseEntity<PortfolioDTO> getPortfolioById(@PathVariable(name = "id") Long id) {
     return ResponseEntity.ok(portfolioService.getPortfolioById(id));
   }
 
   @PostMapping
-  public ResponseEntity<PortfolioDTO> saveClient(@RequestBody PortfolioDTO portfolioDTO) {
+  public ResponseEntity<PortfolioDTO> savePortfolio(@Valid @RequestBody PortfolioDTO portfolioDTO) {
     return ResponseEntity.ok(portfolioService.savePortfolio(portfolioDTO));
   }
 
+  @PostMapping("{id}/positions")
+  public ResponseEntity<PositionDTO> savePositionForPortfolio(
+    @PathVariable(name = "id") Long id,
+    @Valid @RequestBody PositionDTO positionDTO) {
+    PositionDTO createdPosition = positionService.savePositionToPortfolio(id, positionDTO);
+
+    return ResponseEntity
+      .created(positionService.createPositionURI(createdPosition.getId()))
+      .body(createdPosition);
+  }
+
   @DeleteMapping("{id}")
-  public ResponseEntity<Void> deleteClient(@PathVariable(name = "id") Long id) {
+  public ResponseEntity<Void> deletePortfolio(@PathVariable(name = "id") Long id) {
     portfolioService.deletePortfolio(id);
     return ResponseEntity.noContent().build();
   }
