@@ -1,5 +1,18 @@
-version: '3'
+---
+version: "3"
 services:
+  my-spring-app:
+    image: my-spring-app-image
+    ports:
+      - 8080:8080
+    networks:
+      - my-network
+    depends_on:
+      - postgreSQL
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgreSQL:5432/stockdb
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
   postgreSQL:
     container_name: postgreSqlContainer
     image: postgres:13.1
@@ -8,4 +21,10 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
-      - '5432:5432'
+      - 5432:5432
+    networks:
+      - my-network
+
+networks:
+  my-network:
+
