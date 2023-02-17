@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -23,6 +24,24 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   static final String FIELDS_INVALID_MSG = "One or more field are invalid";
+
+  @ExceptionHandler(StockPortfolioManagerNotFoundException.class)
+  protected ResponseEntity<ErrorResponse> stockPortfolioManagerNotFoundException(
+    StockPortfolioManagerNotFoundException exception,
+    WebRequest request) {
+
+    ErrorResponse errorResponse = ErrorResponse.builder()
+      .timeStamp(LocalDateTime.now())
+      .httpStatus(HttpStatus.NOT_FOUND)
+      .message(exception.getLocalizedMessage())
+      .path(request.getDescription(false))
+      .build();
+
+    log.error("Validation error: {}", errorResponse);
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
+  }
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(

@@ -1,7 +1,7 @@
 package com.grybakar.stockportfoliomanager.service.implementation;
 
 import com.grybakar.stockportfoliomanager.dto.ClientDTO;
-import com.grybakar.stockportfoliomanager.exception.StockPortfolioManagerException;
+import com.grybakar.stockportfoliomanager.exception.StockPortfolioManagerNotFoundException;
 import com.grybakar.stockportfoliomanager.mapper.ClientMapper;
 import com.grybakar.stockportfoliomanager.model.Client;
 import com.grybakar.stockportfoliomanager.repository.ClientRepository;
@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
     return clientRepository
       .findById(id)
       .map(clientMapper::toClientDTO)
-      .orElseThrow(() -> new StockPortfolioManagerException("No client found by given id: %d".formatted(id)));
+      .orElseThrow(() -> new StockPortfolioManagerNotFoundException("No client found by given id: %d".formatted(id)));
   }
 
   public ClientDTO saveClient(ClientDTO clientDTO) {
@@ -45,7 +45,7 @@ public class ClientServiceImpl implements ClientService {
   public void deleteClient(Long id) {
     Client client = clientRepository
       .findById(id)
-      .orElseThrow(() -> new StockPortfolioManagerException("No client found by given id: %d".formatted(id)));
+      .orElseThrow(() -> new StockPortfolioManagerNotFoundException("No client found by given id: %d".formatted(id)));
     log.info("Deleting client with id: {}", id);
     clientRepository.delete(client);
   }

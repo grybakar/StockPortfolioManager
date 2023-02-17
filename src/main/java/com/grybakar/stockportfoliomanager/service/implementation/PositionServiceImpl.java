@@ -4,7 +4,7 @@ import static org.springframework.web.util.UriComponentsBuilder.*;
 
 import com.grybakar.stockportfoliomanager.dto.PortfolioDTO;
 import com.grybakar.stockportfoliomanager.dto.PositionDTO;
-import com.grybakar.stockportfoliomanager.exception.StockPortfolioManagerException;
+import com.grybakar.stockportfoliomanager.exception.StockPortfolioManagerNotFoundException;
 import com.grybakar.stockportfoliomanager.mapper.PortfolioMapper;
 import com.grybakar.stockportfoliomanager.mapper.PositionMapper;
 import com.grybakar.stockportfoliomanager.model.Portfolio;
@@ -41,7 +41,7 @@ public class PositionServiceImpl implements PositionService {
   public PositionDTO getPositionById(Long id) {
     log.info("Finding position by Id: {}", id);
     return positionRepository.findById(id).map(positionMapper::toPositionDTO)
-      .orElseThrow(() -> new StockPortfolioManagerException("No position found by given id: %d".formatted(id)));
+      .orElseThrow(() -> new StockPortfolioManagerNotFoundException("No position found by given id: %d".formatted(id)));
   }
 
   @Transactional
@@ -63,7 +63,7 @@ public class PositionServiceImpl implements PositionService {
 
   public void deletePosition(Long id) {
     Position position = positionRepository.findById(id)
-      .orElseThrow(() -> new StockPortfolioManagerException("No position found by given id: %d".formatted(id)));
+      .orElseThrow(() -> new StockPortfolioManagerNotFoundException("No position found by given id: %d".formatted(id)));
     log.info("Deleting position with id: {}", id);
     positionRepository.delete(position);
   }

@@ -1,7 +1,7 @@
 package com.grybakar.stockportfoliomanager.service.implementation;
 
 import com.grybakar.stockportfoliomanager.dto.PortfolioDTO;
-import com.grybakar.stockportfoliomanager.exception.StockPortfolioManagerException;
+import com.grybakar.stockportfoliomanager.exception.StockPortfolioManagerNotFoundException;
 import com.grybakar.stockportfoliomanager.mapper.PortfolioMapper;
 import com.grybakar.stockportfoliomanager.model.Portfolio;
 import com.grybakar.stockportfoliomanager.repository.PortfolioRepository;
@@ -33,7 +33,8 @@ public class PortfolioServiceImpl implements PortfolioService {
     return portfolioRepository
       .findById(id)
       .map(portfolioMapper::toPortfolioDTO)
-      .orElseThrow(() -> new StockPortfolioManagerException("No portfolio found by given id: %d".formatted(id)));
+      .orElseThrow(
+        () -> new StockPortfolioManagerNotFoundException("No portfolio found by given id: %d".formatted(id)));
   }
 
   public PortfolioDTO savePortfolio(PortfolioDTO portfolioDTO) {
@@ -45,7 +46,8 @@ public class PortfolioServiceImpl implements PortfolioService {
   public void deletePortfolio(Long id) {
     Portfolio portfolio = portfolioRepository
       .findById(id)
-      .orElseThrow(() -> new StockPortfolioManagerException("No portfolio found by given id: %d".formatted(id)));
+      .orElseThrow(
+        () -> new StockPortfolioManagerNotFoundException("No portfolio found by given id: %d".formatted(id)));
     log.info("Deleting portfolio with id: {}", id);
     portfolioRepository.delete(portfolio);
   }
